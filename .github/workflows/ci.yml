@@ -32,7 +32,7 @@ jobs:
         run: java -cp 'build/install/cineindex/lib/*' dev.cineindex.app.CineIndex --inspect
       - name: Upload test and coverage reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: reports-${{ matrix.os }}-java-${{ matrix.java }}
           path: |
@@ -40,7 +40,7 @@ jobs:
             build/reports/jacoco/
       - name: Upload application distribution
         if: matrix.os == 'ubuntu-latest' && matrix.java == '17'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: cineindex-distribution
           path: build/distributions/*
