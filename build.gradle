@@ -26,6 +26,19 @@ application {
     applicationName = 'cineindex'
 }
 
+distributions {
+    main {
+        contents {
+            from('LICENSE')
+            from('NOTICE.md')
+            from('README.md')
+            from('CONTRIBUTING.md')
+            from('CHANGELOG.md')
+            from('docs') { into 'docs' }
+        }
+    }
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.release = 17
