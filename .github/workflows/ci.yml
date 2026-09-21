@@ -1,0 +1,46 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Java ${{ matrix.java }} / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        java: ['17', '21']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Test and package
+        shell: bash
+        run: ./gradlew --no-daemon build installDist
+      - name: Smoke-test packaged demo
+        shell: bash
+        run: java -cp 'build/install/cineindex/lib/*' dev.cineindex.app.CineIndex --inspect
+      - name: Upload test and coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-${{ matrix.os }}-java-${{ matrix.java }}
+          path: |
+            build/reports/tests/
+            build/reports/jacoco/
+      - name: Upload application distribution
+        if: matrix.os == 'ubuntu-latest' && matrix.java == '17'
+        uses: actions/upload-artifact@v4
+        with:
+          name: cineindex-distribution
+          path: build/distributions/*

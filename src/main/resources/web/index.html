@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore films, ratings and the people who connect them. Powered by a custom Java indexing engine.">
+  <title>CineIndex — Discover the connections</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#catalogue">Skip to catalogue</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="CineIndex home"><span class="brand-icon" aria-hidden="true">c<span>i</span></span>CineIndex<span class="brand-dot">.</span></a>
+    <nav aria-label="Main navigation"><a class="active" href="#catalogue">Catalogue</a><button id="about-button" class="text-button">Behind the index ↗</button></nav>
+    <span class="status"><i aria-hidden="true"></i> LOCAL ENGINE</span>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy"><div class="eyebrow"><span></span> THE FILM DISCOVERY LAB</div>
+        <h1 id="hero-title">Every film.<br>A deeper <em>connection.</em></h1>
+        <p>Follow the cast. Find your next favourite.<br>Explore the stories behind the numbers.</p>
+        <a class="hero-link" href="#catalogue">Explore the collection <span>↘</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div><div class="art-center">C<span>i</span></div><span class="art-label">FILMS · PEOPLE · CONNECTIONS</span><span class="art-index">INDEX / 001</span></div>
+    </section>
+    <section class="metrics" aria-label="Catalogue statistics">
+      <div><span>FILMS INDEXED</span><strong id="movie-count">—</strong></div>
+      <div><span>AUDIENCE RATINGS</span><strong id="rating-count">—</strong></div>
+      <div><span>CAST MEMBERS</span><strong id="cast-count">—</strong></div>
+      <div><span>AVERAGE RATING</span><strong id="average-rating">—</strong></div>
+    </section>
+    <section id="catalogue" class="catalogue" aria-labelledby="catalogue-heading">
+      <aside class="sidebar">
+        <div class="section-label">01 / DISCOVER</div><h2 id="catalogue-heading">The collection</h2>
+        <p class="muted small">A new perspective on what to watch.</p>
+        <div class="filter-heading">GENRES<button id="reset-button" class="text-button">Reset</button></div>
+        <div id="genre-list" class="genre-list" aria-label="Filter by genre"></div>
+        <label class="minimum" for="minimum">Minimum ratings<select id="minimum"><option value="0">Any number</option><option value="10">10 or more</option><option value="20">20 or more</option><option value="50">50 or more</option></select></label>
+        <div class="source-note"><span class="source-dot"></span><strong id="source-name">Loading catalogue</strong><p id="source-description">Reading the local index.</p></div>
+      </aside>
+      <div class="results-area">
+        <div class="toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search titles and stories…" aria-label="Search titles and overviews" maxlength="200"><kbd>/</kbd></label><label class="sort-label">Sort by<select id="sort"><option value="rating">Highest rated</option><option value="popular">Most rated</option><option value="newest">Newest first</option></select></label></div>
+        <div class="results-meta"><span id="result-count" role="status">Loading films…</span><span id="query-time"></span></div>
+        <div id="error" class="error" role="alert" hidden></div>
+        <div id="movie-grid" class="movie-grid" aria-label="Movies"></div>
+        <div id="empty" class="empty" hidden><h3>No films found.</h3><p>Try a different search or reset your filters.</p></div>
+        <div class="pagination"><button id="previous" class="outline-button" disabled>← Previous</button><span id="page-label"></span><button id="next" class="outline-button" disabled>Next →</button></div>
+      </div>
+    </section>
+  </main>
+  <footer><span class="brand">CineIndex<span class="brand-dot">.</span></span><p>Built around the connections that make cinema interesting.</p><span>JAVA ENGINE / v1.0</span></footer>
+  <dialog id="detail-dialog" aria-labelledby="detail-title"><button class="close-button" id="close-detail" aria-label="Close movie details">×</button><div id="detail-content"></div></dialog>
+  <dialog id="about-dialog" aria-labelledby="about-title"><button class="close-button" id="close-about" aria-label="Close engine information">×</button><div class="about-content"><div class="eyebrow">BEHIND THE INDEX</div><h2 id="about-title">Small engine.<br>Interesting internals.</h2><p>CineIndex connects movie metadata, audience ratings, and film credits through custom Java data structures.</p><div class="about-grid"><section><span>01</span><h3>Find it</h3><p>Chained hash tables connect film IDs to metadata and maintain film-to-person indexes.</p></section><section><span>02</span><h3>Rank it</h3><p>AVL trees order results. Cached rating sums make averages available without rescanning every review.</p></section><section><span>03</span><h3>Connect it</h3><p>Similar films share genres and cast. Each suggestion explains exactly why it appears.</p></section></div><p class="muted">An in-memory, read-only local application. Import data at startup; restart to load a different catalogue.</p><a href="/api/stats" target="_blank" rel="noopener">Explore the JSON API ↗</a></div></dialog>
+</body>
+</html>

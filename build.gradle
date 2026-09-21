@@ -1,0 +1,57 @@
+plugins {
+    id 'application'
+    id 'jacoco'
+}
+
+group = 'dev.cineindex'
+version = '1.0.0'
+
+repositories { mavenCentral() }
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+dependencies {
+    implementation 'org.json:json:20250517'
+    implementation 'org.apache.commons:commons-csv:1.14.1'
+    testImplementation platform('org.junit:junit-bom:5.13.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+application {
+    mainClass = 'dev.cineindex.app.CineIndex'
+    applicationName = 'cineindex'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 17
+}
+
+test {
+    useJUnitPlatform()
+    maxHeapSize = '1g'
+    testLogging { events 'failed', 'skipped' }
+    finalizedBy jacocoTestReport
+}
+
+jacoco { toolVersion = '0.8.13' }
+jacocoTestReport {
+    dependsOn test
+    reports { xml.required = true; html.required = true }
+}
+
+tasks.register('benchmark', JavaExec) {
+    description = 'Run a deterministic, warmed-up catalogue workload.'
+    group = 'verification'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'dev.cineindex.app.Benchmark'
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
