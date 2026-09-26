@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: joshbeira-cineindex
+    runtime: docker
+    plan: free
+    branch: codex/free-hosting
+    healthCheckPath: /api/health

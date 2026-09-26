@@ -17,7 +17,7 @@ public final class ApiServer implements AutoCloseable {
 
     public ApiServer(CatalogService catalogue, int port) throws IOException {
         this.catalogue = catalogue;
-        server = HttpServer.create(new InetSocketAddress("127.0.0.1", port), 32);
+        server = HttpServer.create(new InetSocketAddress(System.getenv().getOrDefault("HOST", "127.0.0.1"), port), 32);
         server.setExecutor(executor);
         server.createContext("/", this::handle);
     }
