@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: joshbeira-cineindex
+    name: cineindex
     runtime: docker
     plan: free
     branch: codex/free-hosting
